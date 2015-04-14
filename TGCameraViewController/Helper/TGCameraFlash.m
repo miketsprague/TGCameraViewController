@@ -70,6 +70,9 @@
     UIColor *tintColor = TintColorFromAVCaptureFlashMode(mode);
     button.enabled = [device isFlashModeSupported:mode];
     
+    // hack
+    button.hidden = true;
+    
     if ([button isKindOfClass:[TGTintedButton class]]) {
         [(TGTintedButton*)button setCustomTintColorOverride:tintColor];
     }

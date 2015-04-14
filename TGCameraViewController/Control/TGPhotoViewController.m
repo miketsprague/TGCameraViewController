@@ -246,6 +246,9 @@ static NSString* const kTGCacheVignetteKey = @"TGCacheVignetteKey";
     _detailFilterView.userInteractionEnabled = NO;
     
     [button addSubview:_detailFilterView];
+    
+    // hack
+    button.hidden = true;
 }
 
 + (instancetype)newController
