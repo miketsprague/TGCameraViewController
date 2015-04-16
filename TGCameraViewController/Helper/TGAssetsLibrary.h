@@ -24,6 +24,7 @@
 //  THE SOFTWARE.
 
 @import AssetsLibrary;
+@import Photos;
 #import "TGAssetImageFile.h"
 
 typedef void(^TGAssetsResultCompletion)(NSURL *assetURL);
