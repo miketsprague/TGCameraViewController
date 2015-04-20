@@ -85,6 +85,11 @@
     _topRightView.transform = CGAffineTransformMakeRotation(M_PI_2);
     _bottomLeftView.transform = CGAffineTransformMakeRotation(-M_PI_2);
     _bottomRightView.transform = CGAffineTransformMakeRotation(M_PI_2*2);
+    
+    // hack
+    if (self.startFrontFacing) {
+        [self toggleTapped];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated

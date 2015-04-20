@@ -96,6 +96,7 @@
 {
     TGCameraViewController *viewController = [TGCameraViewController new];
     viewController.delegate = delegate;
+    viewController.startFrontFacing = self.startFrontFacing;
     
     self.viewControllers = @[viewController];
 }
