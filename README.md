@@ -172,6 +172,7 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info
 
 |Option|Type|Default|Description|
 |:-:|:-:|:-:|:-:|
+|kTGCameraOptionHiddenToggleButton|NSNumber (YES/NO)|NO|Displays or hides the button that switches between the front and rear camera|
 |kTGCameraOptionSaveImageToAlbum|NSNumber (YES/NO)|NO|Save or not the photo in the camera roll|
 
 ```obj-c
@@ -182,6 +183,7 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info
 - (void)viewDidLoad
 {
     //...
+    [TGCamera setOption:kTGCameraOptionHiddenToggleButton value:[NSNumber numberWithBool:YES]];
     [TGCamera setOption:kTGCameraOptionSaveImageToAlbum value:[NSNumber numberWithBool:YES]];
     //...
 }
@@ -189,6 +191,7 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info
 - (IBAction)buttonTapped
 {
     //...
+    BOOL hiddenToggleButton = [[TGCamera getOption:kTGCameraOptionHiddenToggleButton] boolValue];
     BOOL saveToDevice = [[TGCamera getOption:kTGCameraOptionSaveImageToAlbum] boolValue];
     //...    
 }
@@ -218,11 +221,9 @@ You will need LLVM 3.0 or later in order to build TGCameraViewController.
 ### Todo
 
 * Customize layout programatically
-* Add support for more languages
 * Landscape mode support
 * Zoom
 * Image size as global parameter
-* Album button with preview of the last image of the album
 * Fast animations
 
 ---

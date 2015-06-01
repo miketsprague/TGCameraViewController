@@ -11,5 +11,6 @@
 @interface TGTintedButton : UIButton
 
 @property (nonatomic, strong) UIColor *customTintColorOverride;
+@property (nonatomic, assign) BOOL disableTint;
 
 @end

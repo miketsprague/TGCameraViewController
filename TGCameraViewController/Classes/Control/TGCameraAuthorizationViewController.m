@@ -24,8 +24,16 @@
 //  THE SOFTWARE.
 
 #import "TGCameraAuthorizationViewController.h"
+#import "TGCameraFunctions.h"
 
 @interface TGCameraAuthorizationViewController ()
+
+@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
+@property (weak, nonatomic) IBOutlet UILabel *subtitleLabel;
+@property (weak, nonatomic) IBOutlet UILabel *step1Label;
+@property (weak, nonatomic) IBOutlet UILabel *step2Label;
+@property (weak, nonatomic) IBOutlet UILabel *step3Label;
+@property (weak, nonatomic) IBOutlet UILabel *step4Label;
 
 - (IBAction)closeTapped;
 
@@ -34,6 +42,18 @@
 
 
 @implementation TGCameraAuthorizationViewController
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    _titleLabel.text = TGLocalizedString(@"TGCameraViewController-Title");
+    _subtitleLabel.text = TGLocalizedString(@"TGCameraViewController-Subtitle");
+    _step1Label.text = TGLocalizedString(@"TGCameraViewController-Step1");
+    _step2Label.text = TGLocalizedString(@"TGCameraViewController-Step2");
+    _step3Label.text = TGLocalizedString(@"TGCameraViewController-Step3");
+    _step4Label.text = TGLocalizedString(@"TGCameraViewController-Step4");
+}
 
 - (BOOL)prefersStatusBarHidden
 {

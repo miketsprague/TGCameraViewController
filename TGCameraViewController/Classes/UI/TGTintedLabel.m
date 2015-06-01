@@ -17,12 +17,20 @@
 
 @implementation TGTintedLabel
 
-- (void)setNeedsLayout {
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    [self updateTintIfNeeded];
+}
+
+- (void)setNeedsLayout
+{
     [super setNeedsLayout];
     [self updateTintIfNeeded];
 }
 
-- (void)updateTintIfNeeded {
+- (void)updateTintIfNeeded
+{
     if(self.tintColor != [TGCameraColor tintColor] || self.textColor != self.tintColor) {
         [self setTintColor:[TGCameraColor tintColor]];
         self.textColor = self.tintColor;

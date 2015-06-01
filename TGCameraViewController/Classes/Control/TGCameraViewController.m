@@ -26,7 +26,7 @@
 #import "TGCameraViewController.h"
 #import "TGPhotoViewController.h"
 #import "TGCameraSlideView.h"
-
+#import "TGTintedButton.h"
 
 
 @interface TGCameraViewController () <UIImagePickerControllerDelegate, UINavigationControllerDelegate>
@@ -41,12 +41,13 @@
 @property (strong, nonatomic) IBOutlet UIButton *gridButton;
 @property (strong, nonatomic) IBOutlet UIButton *toggleButton;
 @property (strong, nonatomic) IBOutlet UIButton *shotButton;
-@property (strong, nonatomic) IBOutlet UIButton *albumButton;
+@property (strong, nonatomic) IBOutlet TGTintedButton *albumButton;
 @property (strong, nonatomic) IBOutlet UIButton *flashButton;
 @property (strong, nonatomic) IBOutlet TGCameraSlideView *slideUpView;
 @property (strong, nonatomic) IBOutlet TGCameraSlideView *slideDownView;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *topViewHeight;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *toggleButtonWidth;
 
 @property (strong, nonatomic) TGCamera *camera;
 @property (nonatomic) BOOL wasLoaded;
@@ -60,6 +61,7 @@
 - (IBAction)handleTapGesture:(UITapGestureRecognizer *)recognizer;
 
 - (void)deviceOrientationDidChangeNotification;
+- (void)latestPhoto;
 - (AVCaptureVideoOrientation)videoOrientationForDeviceOrientation:(UIDeviceOrientation)deviceOrientation;
 - (void)viewWillDisappearWithCompletion:(void (^)(void))completion;
 
@@ -76,6 +78,14 @@
     if (CGRectGetHeight([[UIScreen mainScreen] bounds]) <= 480) {
         _topViewHeight.constant = 0;
     }
+    
+    if ([[TGCamera getOption:kTGCameraOptionHiddenToggleButton] boolValue] == YES) {
+        _toggleButton.hidden = YES;
+        _toggleButtonWidth.constant = 0;
+    }
+    
+    [_albumButton.layer setCornerRadius:10.f];
+    [_albumButton.layer setMasksToBounds:YES];
     
     _camera = [TGCamera cameraWithFlashButton:_flashButton];
     
@@ -145,6 +155,13 @@
     if (_wasLoaded == NO) {
         _wasLoaded = YES;
        [_camera insertSublayerWithCaptureView:_captureView atRootView:self.view];
+    }
+    
+    // get the latest image from the album
+    ALAuthorizationStatus status = [ALAssetsLibrary authorizationStatus];
+    if (status != ALAuthorizationStatusDenied) {
+        // access to album is authorised
+        [self latestPhoto];
     }
 }
 
@@ -301,6 +318,17 @@
         _toggleButton.transform =
         _albumButton.transform =
         _flashButton.transform = transform;
+    }];
+}
+
+-(void)latestPhoto
+{
+    TGAssetsLibrary *library = [TGAssetsLibrary defaultAssetsLibrary];
+    
+    __weak __typeof(self)wSelf = self;
+    [library latestPhotoWithCompletion:^(UIImage *photo) {
+        wSelf.albumButton.disableTint = YES;
+        [wSelf.albumButton setImage:photo forState:UIControlStateNormal];
     }];
 }
 

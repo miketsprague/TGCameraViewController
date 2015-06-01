@@ -164,6 +164,37 @@
     resultBlock(assetURL);
 }
 
+- (void)latestPhotoWithCompletion:(void (^)(UIImage *photo))completion
+{
+    // Enumerate just the photos and videos group by using ALAssetsGroupSavedPhotos.
+    [self enumerateGroupsWithTypes:ALAssetsGroupSavedPhotos usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
+        
+        // Within the group enumeration block, filter to enumerate just photos.
+        [group setAssetsFilter:[ALAssetsFilter allPhotos]];
+        
+        // For this example, we're only interested in the last item [group numberOfAssets]-1 = last.
+        if ([group numberOfAssets] > 0) {
+            [group enumerateAssetsAtIndexes:[NSIndexSet indexSetWithIndex:[group numberOfAssets]-1] options:0
+            usingBlock:^(ALAsset *alAsset, NSUInteger index, BOOL *innerStop) {
+                // The end of the enumeration is signaled by asset == nil.
+                if (alAsset) {
+                    ALAssetRepresentation *representation = [alAsset defaultRepresentation];
+                    // Do something interesting with the AV asset.
+                    UIImage *img = [UIImage imageWithCGImage:[representation fullScreenImage]];
+                    
+                    // completion
+                    completion(img);
+                    
+                    // we only need the first (most recent) photo -- stop the enumeration
+                    *innerStop = YES;
+                }
+            }];
+        }
+    } failureBlock: ^(NSError *error) {
+        // Typically you should handle an error more gracefully than this.
+    }];
+}
+
 #pragma mark -
 #pragma mark - Private methods
 
